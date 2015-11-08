@@ -1,0 +1,21 @@
+{
+  "name": "t4web/domain-module",
+  "description": "ZF2 Module for Domain implementation.",
+  "type": "zf2-module",
+  "license": "BSD-3-Clause",
+  "keywords": [ "ddd", "zf2 module" ],
+  "homepage": "https://github.com/t4web/DomainModule",
+  "require": {
+    "php": ">=5.5.0",
+    "t4web/domain": "~1.0.0",
+    "t4web/infrastructure": "~1.0.0"
+  },
+  "require-dev" : {
+    "phpunit/phpunit": "~4.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "T4web\\DomainModule\\": "src/"
+    }
+  }
+}
