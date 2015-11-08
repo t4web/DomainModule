@@ -9,6 +9,7 @@ return [
             'T4web\DomainModule\Infrastructure\RepositoryAbstractFactory',
             'T4web\DomainModule\Infrastructure\MapperAbstractFactory',
             'T4web\DomainModule\Infrastructure\QueryBuilderAbstractFactory',
+            'T4web\DomainModule\Infrastructure\ConfigAbstractFactory',
         ],
         'invokables' => [
             'T4webInfrastructure\CriteriaFactory' => 'T4webInfrastructure\CriteriaFactory',

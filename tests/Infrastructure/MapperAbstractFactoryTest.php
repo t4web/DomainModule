@@ -21,7 +21,7 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
-        $entityFactoryMock = $this->getMockBuilder("T4webDomainInterface\EntityFactoryInterface")
+        $entityFactoryMock = $this->getMockBuilder("T4webDomainInterface\\EntityFactoryInterface")
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -30,7 +30,7 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with("$moduleName\\$entityName\\EntityFactory")
             ->willReturn($entityFactoryMock);
 
-        $requestedName = "$moduleName\\$entityName\\Infrastructure\Mapper";
+        $requestedName = "$moduleName\\$entityName\\Infrastructure\\Mapper";
 
         $service = $this->abstractFactory->createServiceWithName(
             $this->serviceLocatorMock,
