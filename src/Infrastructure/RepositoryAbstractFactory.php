@@ -6,6 +6,7 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use T4webInfrastructure\Repository;
+use T4webInfrastructure\Config;
 
 /**
  * Create Service by template:
@@ -27,7 +28,9 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
         list($moduleName, $entityName) = explode('\\', $namespace);
 
         $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
-        $tableGateway = new TableGateway('tasks', $dbAdapter);
+        /** @var Config $config */
+        $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+        $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter);
 
         $eventManager = $serviceManager->get('EventManager');
         $eventManager->addIdentifiers($requestedName);

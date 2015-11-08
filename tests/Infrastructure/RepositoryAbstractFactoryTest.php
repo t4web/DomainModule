@@ -30,16 +30,30 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with("Zend\\Db\\Adapter\\Adapter")
             ->willReturn($dbAdapterMock);
 
-        $emMock = $this->getMock("Zend\\EventManager\\EventManagerInterface");
+        $configMock = $this->getMockBuilder("T4webInfrastructure\\Config")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configMock->expects($this->once())
+            ->method('getTable')
+            ->with($entityName)
+            ->willReturn('some_table');
 
         $this->serviceLocatorMock->expects($this->at(1))
+            ->method('get')
+            ->with("$moduleName\\$entityName\\Infrastructure\\Config")
+            ->willReturn($configMock);
+
+        $emMock = $this->getMock("Zend\\EventManager\\EventManagerInterface");
+
+        $this->serviceLocatorMock->expects($this->at(2))
             ->method('get')
             ->with("EventManager")
             ->willReturn($emMock);
 
         $criteriaFactoryMock = $this->getMock("T4webInfrastructure\\CriteriaFactory");
 
-        $this->serviceLocatorMock->expects($this->at(2))
+        $this->serviceLocatorMock->expects($this->at(3))
             ->method('get')
             ->with("T4webInfrastructure\\CriteriaFactory")
             ->willReturn($criteriaFactoryMock);
@@ -48,7 +62,7 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serviceLocatorMock->expects($this->at(3))
+        $this->serviceLocatorMock->expects($this->at(4))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Mapper")
             ->willReturn($mapperMock);
@@ -57,7 +71,7 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serviceLocatorMock->expects($this->at(4))
+        $this->serviceLocatorMock->expects($this->at(5))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\QueryBuilder")
             ->willReturn($qbMock);
