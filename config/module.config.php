@@ -7,6 +7,7 @@ return [
             'T4web\DomainModule\EntityFactoryAbstractFactory',
 
             'T4web\DomainModule\Infrastructure\RepositoryAbstractFactory',
+            'T4web\DomainModule\Infrastructure\MapperAbstractFactory',
         ],
         'invokables' => [
             'T4webInfrastructure\CriteriaFactory' => 'T4webInfrastructure\CriteriaFactory',
