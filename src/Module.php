@@ -8,7 +8,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
     public function getConfig($env = null)
     {
-        return include __DIR__ . '/config/module.config.php';
+        return include dirname(__DIR__) . '/config/module.config.php';
     }
 
     public function getAutoloaderConfig()
@@ -16,7 +16,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src',
+                    __NAMESPACE__ => dirname(__DIR__) . '/src',
                 ),
             ),
         );
