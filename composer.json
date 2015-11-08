@@ -7,6 +7,10 @@
   "homepage": "https://github.com/t4web/DomainModule",
   "require": {
     "php": ">=5.5.0",
+
+    "zendframework/zend-modulemanager": "~2.5.0",
+    "zendframework/zend-servicemanager": "~2.5.0",
+
     "t4web/domain": "~1.0.0",
     "t4web/infrastructure": "~1.0.0"
   },
@@ -16,6 +20,11 @@
   "autoload": {
     "psr-4": {
       "T4web\\DomainModule\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "T4web\\DomainModuleTest\\": "tests/"
     }
   }
 }
