@@ -21,11 +21,25 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
-        $entityFactoryMock = $this->getMockBuilder("T4webDomainInterface\\EntityFactoryInterface")
+        $configMock = $this->getMockBuilder("T4webInfrastructure\\Config")
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->serviceLocatorMock->expects($this->at(0))
+            ->method('get')
+            ->with("$moduleName\\$entityName\\Infrastructure\\Config")
+            ->willReturn($configMock);
+
+        $configMock->expects($this->once())
+            ->method('getColumnsAsAttributesMap')
+            ->with($entityName)
+            ->willReturn([]);
+
+        $entityFactoryMock = $this->getMockBuilder("T4webDomainInterface\\EntityFactoryInterface")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->serviceLocatorMock->expects($this->at(1))
             ->method('get')
             ->with("$moduleName\\$entityName\\EntityFactory")
             ->willReturn($entityFactoryMock);

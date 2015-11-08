@@ -5,6 +5,7 @@ namespace T4web\DomainModule\Infrastructure;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use T4webInfrastructure\Mapper;
+use T4webInfrastructure\Config;
 
 /**
  * Create Service by template:
@@ -25,8 +26,11 @@ class MapperAbstractFactory implements AbstractFactoryInterface
 
         list($moduleName, $entityName) = explode('\\', $namespace);
 
+        /** @var Config $config */
+        $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+
         return new Mapper(
-            [],
+            $config->getColumnsAsAttributesMap($entityName),
             $serviceManager->get("$moduleName\\$entityName\\EntityFactory")
         );
     }
