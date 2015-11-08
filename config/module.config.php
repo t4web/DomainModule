@@ -8,5 +8,8 @@ return [
 
             'T4web\DomainModule\Infrastructure\RepositoryAbstractFactory',
         ],
+        'invokables' => [
+            'T4webInfrastructure\CriteriaFactory' => 'T4webInfrastructure\CriteriaFactory',
+        ],
     ],
 ];
