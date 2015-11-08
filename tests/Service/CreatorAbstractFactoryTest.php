@@ -25,22 +25,22 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->serviceLocatorMock->expects($this->at(0))
             ->method('get')
-            ->with($this->equalTo("$moduleName\\$entityName\\Validator"))
-            ->will($this->returnValue($validatorMock));
+            ->with("$moduleName\\$entityName\\Validator")
+            ->willReturn($validatorMock);
 
         $repositoryMock = $this->getMock("T4webDomainInterface\\Infrastructure\\RepositoryInterface");
 
         $this->serviceLocatorMock->expects($this->at(1))
             ->method('get')
-            ->with($this->equalTo("$moduleName\\$entityName\\Infrastructure\\Repository"))
-            ->will($this->returnValue($repositoryMock));
+            ->with("$moduleName\\$entityName\\Infrastructure\\Repository")
+            ->willReturn($repositoryMock);
 
         $entityFactoryMock = $this->getMock("T4webDomainInterface\\EntityFactoryInterface");
 
         $this->serviceLocatorMock->expects($this->at(2))
             ->method('get')
-            ->with($this->equalTo("$moduleName\\$entityName\\EntityFactory"))
-            ->will($this->returnValue($entityFactoryMock));
+            ->with("$moduleName\\$entityName\\EntityFactory")
+            ->willReturn($entityFactoryMock);
 
         $requestedName = "$moduleName\\$entityName\\Service\\Creator";
 
