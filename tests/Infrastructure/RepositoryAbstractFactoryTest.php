@@ -41,7 +41,7 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->serviceLocatorMock->expects($this->at(2))
             ->method('get')
-            ->with("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory")
+            ->with("T4webInfrastructure\\CriteriaFactory")
             ->willReturn($criteriaFactoryMock);
 
         $mapperMock = $this->getMockBuilder("T4webInfrastructure\\Mapper")

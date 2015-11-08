@@ -34,7 +34,7 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
 
         return new Repository(
             $entityName,
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory"),
+            $serviceManager->get("T4webInfrastructure\\CriteriaFactory"),
             $tableGateway,
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Mapper"),
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\QueryBuilder"),
