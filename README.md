@@ -5,4 +5,118 @@ Master:
 [![codecov.io](http://codecov.io/github/t4web/DomainModule/coverage.svg?branch=master)](http://codecov.io/github/t4web/DomainModule?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/t4web/DomainModule/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/t4web/DomainModule/?branch=master)
 
-ZF2 Module for [Domain implementation](https://github.com/t4web/Domain)
+ZF2 Module for [Domain implementation](https://github.com/t4web/Domain) and [Infrastructure implementation](https://github.com/t4web/Infrastructure). 
+Provide dynamically setup Domain layer.
+
+### Main Setup
+
+#### By cloning project
+
+1. Clone this project into your `./vendor/` directory.
+
+#### With composer
+
+1. Add this project in your composer.json:
+
+```json
+"require": {
+    "t4web/domain-module": "~1.0.0"
+}
+```
+
+2. Now tell composer to download DomainModule by running the command:
+
+```bash
+$ php composer.phar update
+```
+
+#### Post installation
+
+1. Enabling it in your `application.config.php`file.
+
+```php
+<?php
+return array(
+    'modules' => array(
+        // ...
+        'DomainModule',
+    ),
+    // ...
+);
+```
+
+### Quick start
+
+Describe entity:
+```php
+class Task extends \T4webDomain\Entity {
+    protected $name;
+    protected $assigneeId;
+    protected $status;
+    protected $type;
+}
+```
+Describe validator:
+```php
+class Validator implements T4webDomainInterface\ValidatorInterface
+{
+
+    private $messages = [];
+
+    public function isValid(array $values)
+    {
+        if (empty($values['name'])) {
+            $this->messages['name'] = 'name cannot be empty';
+        }
+    }
+
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+}
+```
+Describe entity_map config in your `module.config.php`:
+```php
+return [
+    // ...
+    
+    'entity_map' => [
+        'Task' => [
+            'table' => 'tasks',
+            'columnsAsAttributesMap' => [
+                'id' => 'id',
+                'name' => 'name',
+                'assigneeId' => 'assignee_id',
+                'status' => 'status',
+                'type' => 'type',
+            ],
+        ],
+    ],
+];
+```
+
+You can get Domain layer from ServiceManager:
+```php
+// in your controller
+$creator = $serviceLocator->get('Tasks\Task\Service\Creator');
+
+$task = $creator->create(['name' => 'buy milk', 'type' => 2]);
+
+if (!$task) {
+    return ['errors' => $creator->getMessages()];
+}
+```
+
+### Components
+- `MODULE-NAME\ENTITY-NAME\Infrastructure\Repository`
+- `MODULE-NAME\ENTITY-NAME\Service\Creator`
+- `MODULE-NAME\ENTITY-NAME\Service\Deleter`
+- `MODULE-NAME\ENTITY-NAME\Service\Updater`
+- `MODULE-NAME\ENTITY-NAME\EntityFactory`
+
+Service classes:
+- `MODULE-NAME\ENTITY-NAME\Infrastructure\Config`
+- `MODULE-NAME\ENTITY-NAME\Infrastructure\Mapper`
+- `MODULE-NAME\ENTITY-NAME\Infrastructure\QueryBuilder`
