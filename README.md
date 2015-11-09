@@ -39,7 +39,7 @@ $ php composer.phar update
 return array(
     'modules' => array(
         // ...
-        'DomainModule',
+        'T4web\DomainModule',
     ),
     // ...
 );
