@@ -24,20 +24,25 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $validatorMock = $this->getMock("T4webDomainInterface\\ValidatorInterface");
 
         $this->serviceLocatorMock->expects($this->at(0))
+            ->method('has')
+            ->with("$moduleName\\$entityName\\CreateValidator")
+            ->willReturn(true);
+
+        $this->serviceLocatorMock->expects($this->at(1))
             ->method('get')
-            ->with("$moduleName\\$entityName\\Validator")
+            ->with("$moduleName\\$entityName\\CreateValidator")
             ->willReturn($validatorMock);
 
         $repositoryMock = $this->getMock("T4webDomainInterface\\Infrastructure\\RepositoryInterface");
 
-        $this->serviceLocatorMock->expects($this->at(1))
+        $this->serviceLocatorMock->expects($this->at(2))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Repository")
             ->willReturn($repositoryMock);
 
         $entityFactoryMock = $this->getMock("T4webDomainInterface\\EntityFactoryInterface");
 
-        $this->serviceLocatorMock->expects($this->at(2))
+        $this->serviceLocatorMock->expects($this->at(3))
             ->method('get')
             ->with("$moduleName\\$entityName\\EntityFactory")
             ->willReturn($entityFactoryMock);

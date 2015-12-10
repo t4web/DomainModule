@@ -25,8 +25,14 @@ class CreatorAbstractFactory implements AbstractFactoryInterface
 
         list($moduleName, $entityName) = explode('\\', $namespace);
 
+        if ($serviceManager->has("$moduleName\\$entityName\\CreateValidator")) {
+            $validator = $serviceManager->get("$moduleName\\$entityName\\CreateValidator");
+        } else {
+            $validator = $serviceManager->get("$moduleName\\$entityName\\Validator");
+        }
+
         return new Creator(
-            $serviceManager->get("$moduleName\\$entityName\\Validator"),
+            $validator,
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
             $serviceManager->get("$moduleName\\$entityName\\EntityFactory")
         );
