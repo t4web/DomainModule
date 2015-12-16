@@ -7,6 +7,7 @@ return [
             'T4web\DomainModule\Service\DeleterAbstractFactory',
             'T4web\DomainModule\Service\UpdaterAbstractFactory',
             'T4web\DomainModule\EntityFactoryAbstractFactory',
+            'T4web\DomainModule\EntityEventManagerAbstractFactory',
 
             'T4web\DomainModule\Infrastructure\RepositoryAbstractFactory',
             'T4web\DomainModule\Infrastructure\MapperAbstractFactory',

@@ -22,6 +22,7 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $validatorMock = $this->getMock("T4webDomainInterface\\ValidatorInterface");
+        $eventManagerMock = $this->getMock("T4webDomainInterface\\EventManagerInterface");
 
         $this->serviceLocatorMock->expects($this->at(0))
             ->method('has')
@@ -46,6 +47,11 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with("$moduleName\\$entityName\\EntityFactory")
             ->willReturn($entityFactoryMock);
+
+        $this->serviceLocatorMock->expects($this->at(4))
+            ->method('get')
+            ->with("$moduleName\\$entityName\\EntityEventManager")
+            ->willReturn($eventManagerMock);
 
         $requestedName = "$moduleName\\$entityName\\Service\\Creator";
 

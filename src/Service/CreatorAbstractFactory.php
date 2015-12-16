@@ -34,7 +34,8 @@ class CreatorAbstractFactory implements AbstractFactoryInterface
         return new Creator(
             $validator,
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
-            $serviceManager->get("$moduleName\\$entityName\\EntityFactory")
+            $serviceManager->get("$moduleName\\$entityName\\EntityFactory"),
+            $serviceManager->get("$moduleName\\$entityName\\EntityEventManager")
         );
     }
 }
