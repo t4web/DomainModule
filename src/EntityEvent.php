@@ -4,8 +4,9 @@ namespace T4web\DomainModule;
 
 use Zend\EventManager\Event;
 use T4webDomainInterface\EntityInterface;
+use T4webDomainInterface\EventInterface;
 
-class EntityEvent extends Event
+class EntityEvent extends Event implements EventInterface
 {
     /**
      * @var string
@@ -23,12 +24,17 @@ class EntityEvent extends Event
     protected $data = [];
 
     /**
+     * @var array
+     */
+    protected $errors = [];
+
+    /**
      * EntityEvent constructor.
      * @param string $name
      * @param EntityInterface $entity
      * @param array $data
      */
-    public function __construct($name, EntityInterface $entity, array $data = []) {
+    public function __construct($name, EntityInterface $entity = null, array $data = []) {
         $this->name = $name;
         $this->entity = $entity;
         $this->data = $data;
@@ -56,5 +62,29 @@ class EntityEvent extends Event
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @param array $errors
+     */
+    public function setErrors(array $errors)
+    {
+        $this->errors = $errors;
     }
 }

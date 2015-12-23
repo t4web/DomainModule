@@ -25,14 +25,7 @@ class UpdaterAbstractFactory implements AbstractFactoryInterface
 
         list($moduleName, $entityName) = explode('\\', $namespace);
 
-        if ($serviceManager->has("$moduleName\\$entityName\\UpdateValidator")) {
-            $validator = $serviceManager->get("$moduleName\\$entityName\\UpdateValidator");
-        } else {
-            $validator = $serviceManager->get("$moduleName\\$entityName\\Validator");
-        }
-
         return new Updater(
-            $validator,
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
             $serviceManager->get("$moduleName\\$entityName\\EntityEventManager")
         );

@@ -21,21 +21,9 @@ class UpdaterAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
-        $validatorMock = $this->getMock("T4webDomainInterface\\ValidatorInterface");
-
-        $this->serviceLocatorMock->expects($this->at(0))
-            ->method('has')
-            ->with("$moduleName\\$entityName\\UpdateValidator")
-            ->willReturn(true);
-
-        $this->serviceLocatorMock->expects($this->at(1))
-            ->method('get')
-            ->with("$moduleName\\$entityName\\UpdateValidator")
-            ->willReturn($validatorMock);
-
         $repositoryMock = $this->getMock("T4webDomainInterface\\Infrastructure\\RepositoryInterface");
 
-        $this->serviceLocatorMock->expects($this->at(2))
+        $this->serviceLocatorMock->expects($this->at(0))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Repository")
             ->willReturn($repositoryMock);
@@ -49,7 +37,6 @@ class UpdaterAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf('T4webDomainInterface\Service\UpdaterInterface', $service);
-        $this->assertAttributeSame($validatorMock, 'validator', $service);
         $this->assertAttributeSame($repositoryMock, 'repository', $service);
     }
 

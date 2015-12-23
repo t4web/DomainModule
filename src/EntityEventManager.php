@@ -5,6 +5,7 @@ namespace T4web\DomainModule;
 use Zend\EventManager\EventManager;
 use T4webDomainInterface\EventManagerInterface;
 use T4webDomainInterface\EventInterface;
+use T4webDomainInterface\EntityInterface;
 
 class EntityEventManager implements EventManagerInterface
 {
@@ -22,10 +23,11 @@ class EntityEventManager implements EventManagerInterface
         $this->eventManager = $eventManager;
     }
 
+    /**
+     * @param EventInterface $event
+     */
     public function trigger(EventInterface $event)
     {
-        $event = new EntityEvent($event->getName(), $event->getEntity(), $event->getData());
-
         $this->eventManager->trigger($event);
     }
 
@@ -36,5 +38,16 @@ class EntityEventManager implements EventManagerInterface
     public function attach($event, $listener = null)
     {
         $this->eventManager->attach($event, $listener);
+    }
+
+    /**
+     * @param $event
+     * @param EntityInterface|null $entity
+     * @param array $data
+     * @return EntityEvent
+     */
+    public function createEvent($event, EntityInterface $entity = null, array $data = [])
+    {
+        return new EntityEvent($event, $entity, $data);
     }
 }

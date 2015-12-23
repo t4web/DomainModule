@@ -21,34 +21,22 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
-        $validatorMock = $this->getMock("T4webDomainInterface\\ValidatorInterface");
         $eventManagerMock = $this->getMock("T4webDomainInterface\\EventManagerInterface");
-
-        $this->serviceLocatorMock->expects($this->at(0))
-            ->method('has')
-            ->with("$moduleName\\$entityName\\CreateValidator")
-            ->willReturn(true);
-
-        $this->serviceLocatorMock->expects($this->at(1))
-            ->method('get')
-            ->with("$moduleName\\$entityName\\CreateValidator")
-            ->willReturn($validatorMock);
-
         $repositoryMock = $this->getMock("T4webDomainInterface\\Infrastructure\\RepositoryInterface");
 
-        $this->serviceLocatorMock->expects($this->at(2))
+        $this->serviceLocatorMock->expects($this->at(0))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Repository")
             ->willReturn($repositoryMock);
 
         $entityFactoryMock = $this->getMock("T4webDomainInterface\\EntityFactoryInterface");
 
-        $this->serviceLocatorMock->expects($this->at(3))
+        $this->serviceLocatorMock->expects($this->at(1))
             ->method('get')
             ->with("$moduleName\\$entityName\\EntityFactory")
             ->willReturn($entityFactoryMock);
 
-        $this->serviceLocatorMock->expects($this->at(4))
+        $this->serviceLocatorMock->expects($this->at(2))
             ->method('get')
             ->with("$moduleName\\$entityName\\EntityEventManager")
             ->willReturn($eventManagerMock);
@@ -62,7 +50,6 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf('T4webDomainInterface\Service\CreatorInterface', $service);
-        $this->assertAttributeSame($validatorMock, 'validator', $service);
         $this->assertAttributeSame($repositoryMock, 'repository', $service);
         $this->assertAttributeSame($entityFactoryMock, 'entityFactory', $service);
     }
