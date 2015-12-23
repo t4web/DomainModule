@@ -33,7 +33,8 @@ class UpdaterAbstractFactory implements AbstractFactoryInterface
 
         return new Updater(
             $validator,
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository")
+            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
+            $serviceManager->get("$moduleName\\$entityName\\EntityEventManager")
         );
     }
 }
