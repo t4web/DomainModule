@@ -26,7 +26,8 @@ class DeleterAbstractFactory implements AbstractFactoryInterface
         list($moduleName, $entityName) = explode('\\', $namespace);
 
         return new Deleter(
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository")
+            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
+            $serviceManager->get("$moduleName\\$entityName\\EntityEventManager")
         );
     }
 }
