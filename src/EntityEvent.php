@@ -26,6 +26,11 @@ class EntityEvent extends Event implements EventInterface
     /**
      * @var array
      */
+    protected $validData = [];
+
+    /**
+     * @var array
+     */
     protected $errors = [];
 
     /**
@@ -86,5 +91,21 @@ class EntityEvent extends Event implements EventInterface
     public function setErrors(array $errors)
     {
         $this->errors = $errors;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValidData()
+    {
+        return $this->validData;
+    }
+
+    /**
+     * @param array $validData
+     */
+    public function setValidData($validData)
+    {
+        $this->validData = $validData;
     }
 }
