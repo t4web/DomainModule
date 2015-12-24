@@ -43,6 +43,7 @@ class EntityEvent extends Event implements EventInterface
         $this->name = $name;
         $this->entity = $entity;
         $this->data = $data;
+        $this->validData = $data;
     }
 
     /**
@@ -98,6 +99,9 @@ class EntityEvent extends Event implements EventInterface
      */
     public function getValidData()
     {
+        if (!empty($this->errors)) {
+            return [];
+        }
         return $this->validData;
     }
 
