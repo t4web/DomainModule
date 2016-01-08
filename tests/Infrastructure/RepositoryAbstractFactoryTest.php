@@ -51,11 +51,13 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with("EventManager")
             ->willReturn($emMock);
 
-        $criteriaFactoryMock = $this->getMock("T4webInfrastructure\\CriteriaFactory");
+        $criteriaFactoryMock = $this->getMockBuilder("T4webInfrastructure\\CriteriaFactory")
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->serviceLocatorMock->expects($this->at(3))
             ->method('get')
-            ->with("T4webInfrastructure\\CriteriaFactory")
+            ->with("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory")
             ->willReturn($criteriaFactoryMock);
 
         $mapperMock = $this->getMockBuilder("T4webInfrastructure\\Mapper")
@@ -66,15 +68,6 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Mapper")
             ->willReturn($mapperMock);
-
-        $qbMock = $this->getMockBuilder("T4webInfrastructure\\QueryBuilder")
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->serviceLocatorMock->expects($this->at(5))
-            ->method('get')
-            ->with("$moduleName\\$entityName\\Infrastructure\\QueryBuilder")
-            ->willReturn($qbMock);
 
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Repository";
 
@@ -92,7 +85,6 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame($entityName, 'entityName', $service);
         $this->assertAttributeSame($criteriaFactoryMock, 'criteriaFactory', $service);
         $this->assertAttributeSame($mapperMock, 'mapper', $service);
-        $this->assertAttributeSame($qbMock, 'queryBuilder', $service);
         $this->assertAttributeSame($emMock, 'eventManager', $service);
     }
 
