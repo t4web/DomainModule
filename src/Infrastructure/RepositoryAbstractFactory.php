@@ -30,7 +30,15 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
         $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
         /** @var Config $config */
         $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
-        $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter);
+
+        $features = [];
+        $tableSequence = $config->getSequence($entityName);
+        $tablePrimaryKey = $config->getPrimaryKey($entityName);
+        if (!empty($tableSequence) && !empty($tablePrimaryKey)) {
+            $features[] = new SequenceFeature($tablePrimaryKey, $tableSequence);
+        }
+
+        $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter, $features);
 
         $eventManager = $serviceManager->get('EventManager');
         $eventManager->addIdentifiers($requestedName);
