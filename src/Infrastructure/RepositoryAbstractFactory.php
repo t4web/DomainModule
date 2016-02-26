@@ -3,6 +3,7 @@
 namespace T4web\DomainModule\Infrastructure;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\TableGateway\Feature\SequenceFeature;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use T4webInfrastructure\Repository;
