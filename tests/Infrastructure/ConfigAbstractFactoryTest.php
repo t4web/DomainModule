@@ -58,7 +58,8 @@ class ConfigAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame(['Task' => []], 'entityMap', $service);
     }
 
-    public function testCanCreateServiceWithName() {
+    public function testCanCreateServiceWithName()
+    {
         $moduleName = 'Tasks';
         $entityName = 'Task';
 

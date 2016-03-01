@@ -40,7 +40,8 @@ class DeleterAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame($repositoryMock, 'repository', $service);
     }
 
-    public function testCanCreateServiceWithName() {
+    public function testCanCreateServiceWithName()
+    {
         $moduleName = 'Tasks';
         $entityName = 'Task';
 

@@ -19,6 +19,9 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('Zend\Loader\StandardAutoloader', $autoloaderConfig);
         $this->assertArrayHasKey('namespaces', $autoloaderConfig['Zend\Loader\StandardAutoloader']);
-        $this->assertArrayHasKey('T4web\DomainModule', $autoloaderConfig['Zend\Loader\StandardAutoloader']['namespaces']);
+        $this->assertArrayHasKey(
+            'T4web\DomainModule',
+            $autoloaderConfig['Zend\Loader\StandardAutoloader']['namespaces']
+        );
     }
 }

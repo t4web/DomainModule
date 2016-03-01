@@ -20,7 +20,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Bo
         $baseModule = $moduleManager->getModule('T4webBase');
 
         if (!is_null($baseModule)) {
-            throw new RuntimeException('T4web\DomainModule has conflict with T4webBase module, for use it you must disable T4webBase module.');
+            throw new RuntimeException('T4web\DomainModule has conflict with T4webBase module,
+                for use it you must disable T4webBase module.');
         }
 
     }
@@ -32,12 +33,12 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Bo
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     __NAMESPACE__ => dirname(__DIR__) . '/src',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

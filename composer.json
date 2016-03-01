@@ -15,7 +15,8 @@
     "t4web/infrastructure": "~1.0.0"
   },
   "require-dev" : {
-    "phpunit/phpunit": "~4.5"
+    "phpunit/phpunit": "~4.5",
+    "squizlabs/php_codesniffer": "^2.3"
   },
   "autoload": {
     "psr-4": {
@@ -26,5 +27,14 @@
     "psr-4": {
       "T4web\\DomainModuleTest\\": "tests/"
     }
+  },
+  "scripts": {
+    "check": [
+      "@cs",
+      "@test"
+    ],
+    "cs": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always"
   }
 }

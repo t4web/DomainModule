@@ -39,7 +39,8 @@ class EntityEvent extends Event implements EventInterface
      * @param EntityInterface $entity
      * @param array $data
      */
-    public function __construct($name, EntityInterface $entity = null, array $data = []) {
+    public function __construct($name, EntityInterface $entity = null, array $data = [])
+    {
         $this->name = $name;
         $this->entity = $entity;
         $this->data = $data;

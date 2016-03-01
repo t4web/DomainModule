@@ -34,7 +34,8 @@ class EntityFactoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame('ArrayObject', 'collectionClass', $service);
     }
 
-    public function testCanCreateServiceWithName() {
+    public function testCanCreateServiceWithName()
+    {
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
