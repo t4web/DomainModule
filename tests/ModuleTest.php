@@ -10,6 +10,18 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     {
         $module = new Module();
 
+        $event = $this->prophesize('Zend\Mvc\MvcEvent');
+        $app = $this->prophesize('Zend\Mvc\Application');
+        $sm = $this->prophesize('Zend\ServiceManager\ServiceManager');
+        $mm = $this->prophesize('Zend\ModuleManager\ModuleManager');
+
+        $event->getApplication()->willReturn($app->reveal());
+        $app->getServiceManager()->willReturn($sm->reveal());
+        $sm->get('ModuleManager')->willReturn($mm->reveal());
+        $mm->getModule('T4webBase');
+
+        $module->onBootstrap($event->reveal());
+
         $config = $module->getConfig();
 
         $this->assertArrayHasKey('service_manager', $config);
