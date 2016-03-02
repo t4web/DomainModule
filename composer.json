@@ -12,7 +12,7 @@
     "zendframework/zend-mvc": "^2.5.0",
     "zendframework/zend-servicemanager": "^2.5.0",
 
-    "t4web/domain": "~1.0.0",
+    "t4web/domain": "~1.1.0",
     "t4web/infrastructure": "~1.0.0"
   },
   "require-dev" : {
