@@ -26,24 +26,9 @@ class ConfigAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $moduleManagerMock = $this->getMockBuilder('Zend\ModuleManager\ModuleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->serviceLocatorMock->expects($this->at(0))
             ->method('get')
-            ->with("ModuleManager")
-            ->willReturn($moduleManagerMock);
-
-        $moduleMock = $this->getMock('Zend\ModuleManager\Feature\ConfigProviderInterface');
-
-        $moduleManagerMock->expects($this->once())
-            ->method('getModule')
-            ->with($moduleName)
-            ->willReturn($moduleMock);
-
-        $moduleMock->expects($this->once())
-            ->method('getConfig')
+            ->with("Config")
             ->willReturn($someConfig);
 
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Config";

@@ -49,7 +49,7 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             $requestedName
         );
 
-        $this->assertInstanceOf('T4webDomainInterface\Service\CreatorInterface', $service);
+        $this->assertInstanceOf('T4webDomainInterface\ServiceInterface', $service);
         $this->assertAttributeSame($repositoryMock, 'repository', $service);
         $this->assertAttributeSame($entityFactoryMock, 'entityFactory', $service);
     }

@@ -26,10 +26,7 @@ class ConfigAbstractFactory implements AbstractFactoryInterface
 
         list($moduleName, $entityName) = explode('\\', $namespace);
 
-        /** @var \Zend\ModuleManager\ModuleManager */
-        $moduleManager = $serviceManager->get('ModuleManager');
-
-        $config = $moduleManager->getModule($moduleName)->getConfig();
+        $config = $serviceManager->get('Config');
 
         if (!isset($config['entity_map'])) {
             throw new ServiceNotCreatedException("You must define

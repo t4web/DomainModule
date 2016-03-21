@@ -3,6 +3,7 @@
 namespace T4web\DomainModuleTest;
 
 use T4web\DomainModule\Module;
+use Zend\Mvc\MvcEvent;
 
 class ModuleTest extends \PHPUnit_Framework_TestCase
 {

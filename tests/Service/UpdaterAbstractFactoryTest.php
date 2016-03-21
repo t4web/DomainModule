@@ -36,7 +36,7 @@ class UpdaterAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             $requestedName
         );
 
-        $this->assertInstanceOf('T4webDomainInterface\Service\UpdaterInterface', $service);
+        $this->assertInstanceOf('T4webDomainInterface\ServiceInterface', $service);
         $this->assertAttributeSame($repositoryMock, 'repository', $service);
     }
 
