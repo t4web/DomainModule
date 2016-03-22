@@ -59,6 +59,18 @@ class Task extends \T4webDomain\Entity {
      * @var Users\User\User
      */
     protected $assignee;
+
+    public function __construct(array $data, Users\User\User $assignee = null) {
+        parent::__construct($data);
+        $this->assignee = $assignee;
+    }
+
+    /**
+     * @return Users\User\User
+     */
+    public function getAssignee() {
+        return $this->assignee;
+    }
 }
 ```
 
