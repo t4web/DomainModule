@@ -54,29 +54,14 @@ class Task extends \T4webDomain\Entity {
     protected $assigneeId;
     protected $status;
     protected $type;
+
+    /**
+     * @var Users\User\User
+     */
+    protected $assignee;
 }
 ```
-Describe validator:
-```php
-class Validator implements T4webDomainInterface\ValidatorInterface
-{
 
-    private $messages = [];
-
-    public function isValid(array $values)
-    {
-        if (empty($values['name'])) {
-            $this->messages['name'] = 'name cannot be empty';
-        }
-    }
-
-    public function getMessages()
-    {
-        return $this->messages;
-    }
-
-}
-```
 Describe entity_map config in your `module.config.php`:
 ```php
 return [
@@ -84,13 +69,32 @@ return [
     
     'entity_map' => [
         'Task' => [
+            // table name
             'table' => 'tasks',
+
+            // optional, only if you have use short service names
+            'entityClass' => 'Tasks\Task\Task',
+
+            // optional, by default 'id'
+            'primaryKey' => 'id',
+
+            // map entity field with table field
             'columnsAsAttributesMap' => [
                 'id' => 'id',
                 'name' => 'name',
                 'assigneeId' => 'assignee_id',
                 'status' => 'status',
                 'type' => 'type',
+            ],
+
+            // optional, aliases for criteria - for pretty query args
+            'criteriaMap' => [
+                'id' => 'id_equalTo'
+            ],
+
+            // optional, relations for filtering and fetching aggregate entity
+            'relations' => [
+                'User' => ['tasks.assignee_id', 'users.id']
             ],
         ],
     ],
@@ -100,13 +104,22 @@ return [
 You can get Domain layer from ServiceManager:
 ```php
 // in your controller
-$creator = $serviceLocator->get('Tasks\Task\Service\Creator');
+$creator = $serviceLocator->get('Task\Service\Creator');
 
 $task = $creator->create(['name' => 'buy milk', 'type' => 2]);
 
 if (!$task) {
     return ['errors' => $creator->getMessages()];
 }
+
+$repository = $serviceLocator->get('Task\Infrastructure\Repository');
+/** @var Tasks\Task\Task $task */
+$task = $repository->findById(123);
+
+$repository = $serviceLocator->get('Task\Infrastructure\AggregateRepository');
+$task = $repository->findWith('User')->findById(123);
+/** @var Users\User\User $assignee */
+$assignee = $task->getAssignee();
 ```
 
 ### Components
@@ -120,3 +133,18 @@ Service classes:
 - `MODULE-NAME\ENTITY-NAME\Infrastructure\Config`
 - `MODULE-NAME\ENTITY-NAME\Infrastructure\Mapper`
 - `MODULE-NAME\ENTITY-NAME\Infrastructure\QueryBuilder`
+
+We recommend use short service names - without module name
+
+- `ENTITY-NAME\Infrastructure\Repository`
+- `ENTITY-NAME\Service\Creator`
+- `ENTITY-NAME\Service\Deleter`
+- `ENTITY-NAME\Service\Updater`
+- `ENTITY-NAME\EntityFactory`
+
+Service classes:
+- `ENTITY-NAME\Infrastructure\Config`
+- `ENTITY-NAME\Infrastructure\Mapper`
+- `ENTITY-NAME\Infrastructure\QueryBuilder`
+
+When you use short service names - `entityClass` config parameter is required.
