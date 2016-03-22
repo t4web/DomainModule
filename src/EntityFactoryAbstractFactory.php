@@ -5,6 +5,7 @@ namespace T4web\DomainModule;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use T4webDomain\EntityFactory;
+use T4webInfrastructure\Config;
 
 /**
  * Create Service by template:
@@ -23,8 +24,19 @@ class EntityFactoryAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'EntityFactory', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', $namespace);
 
-        return new EntityFactory("$moduleName\\$entityName\\$entityName");
+        if (count($namespaceParts) > 1) {
+            list($moduleName, $entityName) = $namespaceParts;
+            $entityClass = "$moduleName\\$entityName\\$entityName";
+        } else {
+            $entityName = $namespaceParts;
+
+            /** @var Config $config */
+            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
+            $entityClass = $config->getEntityClass($entityName);
+        }
+
+        return new EntityFactory($entityClass);
     }
 }

@@ -30,8 +30,7 @@ class MapperAbstractFactory implements AbstractFactoryInterface
         $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
 
         return new Mapper(
-            $config->getColumnsAsAttributesMap($entityName),
-            $serviceManager->get("$moduleName\\$entityName\\EntityFactory")
+            $config->getColumnsAsAttributesMap($entityName)
         );
     }
 }

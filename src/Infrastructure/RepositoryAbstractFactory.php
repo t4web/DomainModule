@@ -49,7 +49,7 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory"),
             $tableGateway,
             $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Mapper"),
-            $config,
+            $serviceManager->get("$moduleName\\$entityName\\EntityFactory"),
             $eventManager
         );
     }
