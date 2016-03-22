@@ -69,6 +69,15 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with("$moduleName\\$entityName\\Infrastructure\\Mapper")
             ->willReturn($mapperMock);
 
+        $entityFactoryMock = $this->getMockBuilder("T4webDomainInterface\\EntityFactoryInterface")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->serviceLocatorMock->expects($this->at(5))
+            ->method('get')
+            ->with("$moduleName\\$entityName\\EntityFactory")
+            ->willReturn($entityFactoryMock);
+
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Repository";
 
         $emMock->expects($this->once())

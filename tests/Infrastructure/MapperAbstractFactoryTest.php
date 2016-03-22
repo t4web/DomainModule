@@ -35,15 +35,6 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($entityName)
             ->willReturn([]);
 
-        $entityFactoryMock = $this->getMockBuilder("T4webDomainInterface\\EntityFactoryInterface")
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->serviceLocatorMock->expects($this->at(1))
-            ->method('get')
-            ->with("$moduleName\\$entityName\\EntityFactory")
-            ->willReturn($entityFactoryMock);
-
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Mapper";
 
         $service = $this->abstractFactory->createServiceWithName(
@@ -54,7 +45,6 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('T4webInfrastructure\Mapper', $service);
         $this->assertAttributeSame([], 'columnsAsAttributesMap', $service);
-        $this->assertAttributeSame($entityFactoryMock, 'entityFactory', $service);
     }
 
     public function testCanCreateServiceWithName()
