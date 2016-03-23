@@ -21,14 +21,7 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
-        $dbAdapterMock = $this->getMockBuilder("Zend\\Db\\Adapter\\Adapter")
-            ->disableOriginalConstructor()
-            ->getMock();
 
-        $this->serviceLocatorMock->expects($this->at(0))
-            ->method('get')
-            ->with("Zend\\Db\\Adapter\\Adapter")
-            ->willReturn($dbAdapterMock);
 
         $configMock = $this->getMockBuilder("T4webInfrastructure\\Config")
             ->disableOriginalConstructor()
@@ -39,23 +32,16 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($entityName)
             ->willReturn('some_table');
 
-        $this->serviceLocatorMock->expects($this->at(1))
+        $this->serviceLocatorMock->expects($this->at(0))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Config")
             ->willReturn($configMock);
-
-        $emMock = $this->getMock("Zend\\EventManager\\EventManagerInterface");
-
-        $this->serviceLocatorMock->expects($this->at(2))
-            ->method('get')
-            ->with("EventManager")
-            ->willReturn($emMock);
 
         $criteriaFactoryMock = $this->getMockBuilder("T4webInfrastructure\\CriteriaFactory")
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serviceLocatorMock->expects($this->at(3))
+        $this->serviceLocatorMock->expects($this->at(1))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory")
             ->willReturn($criteriaFactoryMock);
@@ -64,7 +50,7 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serviceLocatorMock->expects($this->at(4))
+        $this->serviceLocatorMock->expects($this->at(2))
             ->method('get')
             ->with("$moduleName\\$entityName\\Infrastructure\\Mapper")
             ->willReturn($mapperMock);
@@ -73,10 +59,26 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serviceLocatorMock->expects($this->at(5))
+        $this->serviceLocatorMock->expects($this->at(3))
             ->method('get')
             ->with("$moduleName\\$entityName\\EntityFactory")
             ->willReturn($entityFactoryMock);
+
+        $dbAdapterMock = $this->getMockBuilder("Zend\\Db\\Adapter\\Adapter")
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->serviceLocatorMock->expects($this->at(4))
+            ->method('get')
+            ->with("Zend\\Db\\Adapter\\Adapter")
+            ->willReturn($dbAdapterMock);
+
+        $emMock = $this->getMock("Zend\\EventManager\\EventManagerInterface");
+
+        $this->serviceLocatorMock->expects($this->at(5))
+            ->method('get')
+            ->with("EventManager")
+            ->willReturn($emMock);
 
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Repository";
 

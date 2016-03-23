@@ -24,13 +24,19 @@ class ConfigAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'Infrastructure\Config', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
+
+        if (count($namespaceParts) > 1) {
+            $entityName = $namespaceParts[1];
+        } else {
+            $entityName = $namespaceParts[0];
+        }
 
         $config = $serviceManager->get('Config');
 
         if (!isset($config['entity_map'])) {
             throw new ServiceNotCreatedException("You must define
-                and configure $moduleName\\$entityName in 'entity_map' config entry");
+                and configure $entityName in 'entity_map' config entry");
         }
 
         return new Config($config['entity_map']);

@@ -26,11 +26,23 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'Infrastructure\Repository', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
 
-        $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
-        /** @var Config $config */
-        $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+        if (count($namespaceParts) > 1) {
+            list($moduleName, $entityName) = $namespaceParts;
+            /** @var Config $config */
+            $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+            $criteriaFactory = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory");
+            $mapper = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Mapper");
+            $entityFactory = $serviceManager->get("$moduleName\\$entityName\\EntityFactory");
+        } else {
+            $entityName = $namespaceParts[0];
+            /** @var Config $config */
+            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
+            $criteriaFactory = $serviceManager->get("$entityName\\Infrastructure\\CriteriaFactory");
+            $mapper = $serviceManager->get("$entityName\\Infrastructure\\Mapper");
+            $entityFactory = $serviceManager->get("$entityName\\EntityFactory");
+        }
 
         $features = [];
         $tableSequence = $config->getSequence($entityName);
@@ -39,6 +51,7 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
             $features[] = new SequenceFeature($tablePrimaryKey, $tableSequence);
         }
 
+        $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
         $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter, $features);
 
         $eventManager = $serviceManager->get('EventManager');
@@ -46,10 +59,10 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
 
         return new Repository(
             $entityName,
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory"),
+            $criteriaFactory,
             $tableGateway,
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Mapper"),
-            $serviceManager->get("$moduleName\\$entityName\\EntityFactory"),
+            $mapper,
+            $entityFactory,
             $eventManager
         );
     }
