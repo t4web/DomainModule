@@ -24,13 +24,13 @@ class EntityFactoryAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'EntityFactory', true);
 
-        $namespaceParts = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
 
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
             $entityClass = "$moduleName\\$entityName\\$entityName";
         } else {
-            $entityName = $namespaceParts;
+            $entityName = $namespaceParts[0];
 
             /** @var Config $config */
             $config = $serviceManager->get("$entityName\\Infrastructure\\Config");

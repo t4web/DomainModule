@@ -24,10 +24,17 @@ class MapperAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'Infrastructure\Mapper', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
 
-        /** @var Config $config */
-        $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+        if (count($namespaceParts) > 1) {
+            list($moduleName, $entityName) = $namespaceParts;
+            /** @var Config $config */
+            $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+        } else {
+            $entityName = $namespaceParts[0];
+            /** @var Config $config */
+            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
+        }
 
         return new Mapper(
             $config->getColumnsAsAttributesMap($entityName)

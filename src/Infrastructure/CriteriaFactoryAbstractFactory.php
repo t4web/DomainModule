@@ -23,10 +23,16 @@ class CriteriaFactoryAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'Infrastructure\CriteriaFactory', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
 
-        return new CriteriaFactory(
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config")
-        );
+        if (count($namespaceParts) > 1) {
+            list($moduleName, $entityName) = $namespaceParts;
+            $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
+        } else {
+            $entityName = $namespaceParts[0];
+            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
+        }
+
+        return new CriteriaFactory($config);
     }
 }

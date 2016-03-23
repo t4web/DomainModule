@@ -23,12 +23,19 @@ class CreatorAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'Service\Creator', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
 
-        return new Creator(
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
-            $serviceManager->get("$moduleName\\$entityName\\EntityFactory"),
-            $serviceManager->get("$moduleName\\$entityName\\EntityEventManager")
-        );
+        if (count($namespaceParts) > 1) {
+            list($moduleName, $entityName) = $namespaceParts;
+            $repository = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository");
+            $entityFactory = $serviceManager->get("$moduleName\\$entityName\\EntityFactory");
+            $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
+        } else {
+            $entityName = $namespaceParts[0];
+            $entityFactory = $serviceManager->get("$entityName\\Infrastructure\\Repository");
+            $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
+        }
+
+        return new Creator($repository, $entityFactory, $entityEventManager);
     }
 }

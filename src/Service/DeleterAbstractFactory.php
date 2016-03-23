@@ -23,11 +23,17 @@ class DeleterAbstractFactory implements AbstractFactoryInterface
     {
         $namespace = strstr($requestedName, 'Service\Deleter', true);
 
-        list($moduleName, $entityName) = explode('\\', $namespace);
+        $namespaceParts = explode('\\', trim($namespace, "\\"));
 
-        return new Deleter(
-            $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository"),
-            $serviceManager->get("$moduleName\\$entityName\\EntityEventManager")
-        );
+        if (count($namespaceParts) > 1) {
+            list($moduleName, $entityName) = $namespaceParts;
+            $repository = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository");
+            $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
+        } else {
+            $entityName = $namespaceParts[0];
+            $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
+        }
+
+        return new Deleter($repository, $entityEventManager);
     }
 }
