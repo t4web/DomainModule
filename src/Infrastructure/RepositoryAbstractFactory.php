@@ -63,7 +63,8 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
             $tableGateway,
             $mapper,
             $entityFactory,
-            $eventManager
+            $eventManager,
+            $tablePrimaryKey
         );
     }
 }
