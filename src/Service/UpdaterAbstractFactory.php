@@ -31,6 +31,7 @@ class UpdaterAbstractFactory implements AbstractFactoryInterface
             $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
         } else {
             $entityName = $namespaceParts[0];
+            $repository = $serviceManager->get("$entityName\\Infrastructure\\Repository");
             $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
         }
 
