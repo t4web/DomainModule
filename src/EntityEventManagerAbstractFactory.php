@@ -18,6 +18,11 @@ class EntityEventManagerAbstractFactory implements AbstractFactoryInterface
         $eventManager = new ZendEventManager();
         $entityEventManager = new EntityEventManager($eventManager);
 
+        $entityParams = explode('\\', $requestedName);
+        if (isset($entityParams[0])) {
+            $eventManager->setIdentifiers($entityParams[0]);
+        }
+
         return $entityEventManager;
     }
 }
