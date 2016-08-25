@@ -33,7 +33,7 @@ class CreatorAbstractFactory implements AbstractFactoryInterface
         } else {
             $entityName = $namespaceParts[0];
             $repository = $serviceManager->get("$entityName\\Infrastructure\\Repository");
-            $entityFactory = $serviceManager->get("$entityName\\Infrastructure\\Repository");
+            $entityFactory = $serviceManager->get("$entityName\\Infrastructure\\EntityFactory");
             $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
         }
 
