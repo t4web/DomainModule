@@ -20,7 +20,7 @@ Provide dynamically setup Domain layer.
 
 ```json
 "require": {
-    "t4web/domain-module": "~1.2.0"
+    "t4web/domain-module": "~1.3.0"
 }
 ```
 
