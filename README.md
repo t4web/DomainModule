@@ -86,6 +86,9 @@ return [
 
             // optional, only if you have use short service names
             'entityClass' => 'Tasks\Task\Task',
+            
+            // optional, only if you have use short service names
+            'collectionClass' => 'Tasks\Task\TaskCollection',
 
             // optional, by default 'id'
             'primaryKey' => 'id',
