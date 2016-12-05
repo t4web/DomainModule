@@ -26,6 +26,7 @@ class EntityFactoryAbstractFactory implements AbstractFactoryInterface
 
         $namespaceParts = explode('\\', trim($namespace, "\\"));
 
+        $collectionClass = 'ArrayObject';
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
             $entityClass = "$moduleName\\$entityName\\$entityName";
@@ -35,8 +36,9 @@ class EntityFactoryAbstractFactory implements AbstractFactoryInterface
             /** @var Config $config */
             $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
             $entityClass = $config->getEntityClass($entityName);
+            $collectionClass = $config->getCollectionClass($entityName);
         }
 
-        return new EntityFactory($entityClass);
+        return new EntityFactory($entityClass, $collectionClass);
     }
 }
