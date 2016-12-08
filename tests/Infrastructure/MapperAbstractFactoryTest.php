@@ -35,6 +35,11 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($entityName)
             ->willReturn([]);
 
+        $configMock->expects($this->once())
+            ->method('getSerializedColumns')
+            ->with($entityName)
+            ->willReturn([]);
+
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Mapper";
 
         $service = $this->abstractFactory->createServiceWithName(
