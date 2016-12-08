@@ -37,7 +37,8 @@ class MapperAbstractFactory implements AbstractFactoryInterface
         }
 
         return new Mapper(
-            $config->getColumnsAsAttributesMap($entityName)
+            $config->getColumnsAsAttributesMap($entityName),
+            $config->getSerializedColumns($entityName)
         );
     }
 }
