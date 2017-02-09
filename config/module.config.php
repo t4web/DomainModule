@@ -10,6 +10,7 @@ return [
             'T4web\DomainModule\EntityEventManagerAbstractFactory',
 
             'T4web\DomainModule\Infrastructure\RepositoryAbstractFactory',
+            'T4web\DomainModule\Infrastructure\InMemoryRepositoryAbstractFactory',
             'T4web\DomainModule\Infrastructure\FinderAggregateRepositoryFactory',
             'T4web\DomainModule\Infrastructure\MapperAbstractFactory',
             'T4web\DomainModule\Infrastructure\CriteriaFactoryAbstractFactory',
