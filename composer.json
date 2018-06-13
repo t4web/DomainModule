@@ -8,9 +8,9 @@
   "require": {
     "php": ">=5.5.0",
 
-    "zendframework/zend-modulemanager": "<2.6 >=2.4",
-    "zendframework/zend-mvc": "<2.6 >=2.4",
-    "zendframework/zend-servicemanager": "<2.6 >=2.4",
+    "zendframework/zend-modulemanager": ">=2.6",
+    "zendframework/zend-mvc": ">=2.6",
+    "zendframework/zend-servicemanager": ">=2.6",
 
     "t4web/domain": "~1.1.0",
     "t4web/infrastructure": "~1.3.1"
