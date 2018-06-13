@@ -2,8 +2,8 @@
 
 namespace T4web\DomainModule\Infrastructure;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use T4webInfrastructure\Config;
 
@@ -15,12 +15,12 @@ use T4webInfrastructure\Config;
  */
 class ConfigAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Infrastructure\Config')) == 'Infrastructure\Config';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Infrastructure\Config', true);
 
@@ -32,7 +32,7 @@ class ConfigAbstractFactory implements AbstractFactoryInterface
             $entityName = $namespaceParts[0];
         }
 
-        $config = $serviceManager->get('Config');
+        $config = $container->get('Config');
 
         if (!isset($config['entity_map'])) {
             throw new ServiceNotCreatedException("You must define

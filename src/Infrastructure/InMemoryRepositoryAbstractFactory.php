@@ -2,8 +2,8 @@
 
 namespace T4web\DomainModule\Infrastructure;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use T4webInfrastructure\InMemoryRepository;
 use T4webInfrastructure\Config;
 
@@ -15,12 +15,12 @@ use T4webInfrastructure\Config;
  */
 class InMemoryRepositoryAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Infrastructure\InMemoryRepository')) == 'Infrastructure\InMemoryRepository';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Infrastructure\InMemoryRepository', true);
 
@@ -29,18 +29,18 @@ class InMemoryRepositoryAbstractFactory implements AbstractFactoryInterface
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
             /** @var Config $config */
-            $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
-            $criteriaFactory = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory");
-            $entityFactory = $serviceManager->get("$moduleName\\$entityName\\EntityFactory");
+            $config = $container->get("$moduleName\\$entityName\\Infrastructure\\Config");
+            $criteriaFactory = $container->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory");
+            $entityFactory = $container->get("$moduleName\\$entityName\\EntityFactory");
         } else {
             $entityName = $namespaceParts[0];
             /** @var Config $config */
-            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
-            $criteriaFactory = $serviceManager->get("$entityName\\Infrastructure\\CriteriaFactory");
-            $entityFactory = $serviceManager->get("$entityName\\EntityFactory");
+            $config = $container->get("$entityName\\Infrastructure\\Config");
+            $criteriaFactory = $container->get("$entityName\\Infrastructure\\CriteriaFactory");
+            $entityFactory = $container->get("$entityName\\EntityFactory");
         }
 
-        $eventManager = $serviceManager->get('EventManager');
+        $eventManager = $container->get('EventManager');
         $eventManager->addIdentifiers("$entityName\\Infrastructure\\Repository");
         $collectionClass = $config->getCollectionClass($entityName);
 

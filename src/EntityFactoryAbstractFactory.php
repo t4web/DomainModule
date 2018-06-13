@@ -2,8 +2,8 @@
 
 namespace T4web\DomainModule;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use T4webDomain\EntityFactory;
 use T4webInfrastructure\Config;
 
@@ -15,12 +15,12 @@ use T4webInfrastructure\Config;
  */
 class EntityFactoryAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('EntityFactory')) == 'EntityFactory';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'EntityFactory', true);
 
@@ -34,7 +34,7 @@ class EntityFactoryAbstractFactory implements AbstractFactoryInterface
             $entityName = $namespaceParts[0];
 
             /** @var Config $config */
-            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
+            $config = $container->get("$entityName\\Infrastructure\\Config");
             $entityClass = $config->getEntityClass($entityName);
             $collectionClass = $config->getCollectionClass($entityName);
         }

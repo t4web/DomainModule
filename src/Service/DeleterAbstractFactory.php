@@ -2,8 +2,8 @@
 
 namespace T4web\DomainModule\Service;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use T4webDomain\Service\Deleter;
 
 /**
@@ -14,12 +14,12 @@ use T4webDomain\Service\Deleter;
  */
 class DeleterAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Service\Deleter')) == 'Service\Deleter';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Service\Deleter', true);
 
@@ -27,12 +27,12 @@ class DeleterAbstractFactory implements AbstractFactoryInterface
 
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
-            $repository = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository");
-            $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
+            $repository = $container->get("$moduleName\\$entityName\\Infrastructure\\Repository");
+            $entityEventManager = $container->get("$moduleName\\$entityName\\EntityEventManager");
         } else {
             $entityName = $namespaceParts[0];
-            $repository = $serviceManager->get("$entityName\\Infrastructure\\Repository");
-            $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
+            $repository = $container->get("$entityName\\Infrastructure\\Repository");
+            $entityEventManager = $container->get("$entityName\\EntityEventManager");
         }
 
         return new Deleter($repository, $entityEventManager);

@@ -2,8 +2,8 @@
 
 namespace T4web\DomainModule\Service;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use T4webDomain\Service\Updater;
 
 /**
@@ -14,12 +14,12 @@ use T4webDomain\Service\Updater;
  */
 class UpdaterAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Service\Updater')) == 'Service\Updater';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Service\Updater', true);
 
@@ -27,11 +27,11 @@ class UpdaterAbstractFactory implements AbstractFactoryInterface
 
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
-            $repository = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository");
+            $repository = $container->get("$moduleName\\$entityName\\Infrastructure\\Repository");
             $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
         } else {
             $entityName = $namespaceParts[0];
-            $repository = $serviceManager->get("$entityName\\Infrastructure\\Repository");
+            $repository = $container->get("$entityName\\Infrastructure\\Repository");
             $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
         }
 

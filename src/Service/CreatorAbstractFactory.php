@@ -2,8 +2,8 @@
 
 namespace T4web\DomainModule\Service;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use T4webDomain\Service\Creator;
 
 /**
@@ -14,12 +14,12 @@ use T4webDomain\Service\Creator;
  */
 class CreatorAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Service\Creator')) == 'Service\Creator';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Service\Creator', true);
 
@@ -27,14 +27,14 @@ class CreatorAbstractFactory implements AbstractFactoryInterface
 
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
-            $repository = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository");
-            $entityFactory = $serviceManager->get("$moduleName\\$entityName\\EntityFactory");
-            $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
+            $repository = $container->get("$moduleName\\$entityName\\Infrastructure\\Repository");
+            $entityFactory = $container->get("$moduleName\\$entityName\\EntityFactory");
+            $entityEventManager = $container->get("$moduleName\\$entityName\\EntityEventManager");
         } else {
             $entityName = $namespaceParts[0];
-            $repository = $serviceManager->get("$entityName\\Infrastructure\\Repository");
-            $entityFactory = $serviceManager->get("$entityName\\EntityFactory");
-            $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
+            $repository = $container->get("$entityName\\Infrastructure\\Repository");
+            $entityFactory = $container->get("$entityName\\EntityFactory");
+            $entityEventManager = $container->get("$entityName\\EntityEventManager");
         }
 
         return new Creator($repository, $entityFactory, $entityEventManager);

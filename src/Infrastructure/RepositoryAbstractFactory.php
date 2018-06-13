@@ -4,8 +4,8 @@ namespace T4web\DomainModule\Infrastructure;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\TableGateway\Feature\SequenceFeature;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use T4webInfrastructure\Repository;
 use T4webInfrastructure\Config;
 
@@ -17,12 +17,12 @@ use T4webInfrastructure\Config;
  */
 class RepositoryAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Infrastructure\Repository')) == 'Infrastructure\Repository';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Infrastructure\Repository', true);
 
@@ -31,17 +31,17 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
             /** @var Config $config */
-            $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
-            $criteriaFactory = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory");
-            $mapper = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Mapper");
-            $entityFactory = $serviceManager->get("$moduleName\\$entityName\\EntityFactory");
+            $config = $container->get("$moduleName\\$entityName\\Infrastructure\\Config");
+            $criteriaFactory = $container->get("$moduleName\\$entityName\\Infrastructure\\CriteriaFactory");
+            $mapper = $container->get("$moduleName\\$entityName\\Infrastructure\\Mapper");
+            $entityFactory = $container->get("$moduleName\\$entityName\\EntityFactory");
         } else {
             $entityName = $namespaceParts[0];
             /** @var Config $config */
-            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
-            $criteriaFactory = $serviceManager->get("$entityName\\Infrastructure\\CriteriaFactory");
-            $mapper = $serviceManager->get("$entityName\\Infrastructure\\Mapper");
-            $entityFactory = $serviceManager->get("$entityName\\EntityFactory");
+            $config = $container->get("$entityName\\Infrastructure\\Config");
+            $criteriaFactory = $container->get("$entityName\\Infrastructure\\CriteriaFactory");
+            $mapper = $container->get("$entityName\\Infrastructure\\Mapper");
+            $entityFactory = $container->get("$entityName\\EntityFactory");
         }
 
         $features = [];
@@ -51,10 +51,10 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
             $features[] = new SequenceFeature($tablePrimaryKey, $tableSequence);
         }
 
-        $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
+        $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
         $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter, $features);
 
-        $eventManager = $serviceManager->get('EventManager');
+        $eventManager = $container->get('EventManager');
         $eventManager->addIdentifiers($requestedName);
 
         return new Repository(

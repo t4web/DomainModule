@@ -4,8 +4,8 @@ namespace T4web\DomainModule\Infrastructure;
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\TableGateway\Feature\SequenceFeature;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use T4webInfrastructure\Config;
 use T4webInfrastructure\FinderAggregateRepository;
@@ -18,12 +18,12 @@ use T4webInfrastructure\FinderAggregateRepository;
  */
 class FinderAggregateRepositoryFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return substr($requestedName, -strlen('Infrastructure\FinderAggregateRepository')) == 'Infrastructure\FinderAggregateRepository';
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $serviceManager, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $namespace = strstr($requestedName, 'Infrastructure\FinderAggregateRepository', true);
 
@@ -32,20 +32,20 @@ class FinderAggregateRepositoryFactory implements AbstractFactoryInterface
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
             /** @var Config $config */
-            $config = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Config");
-            $repository = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Repository");
-            $mapper = $serviceManager->get("$moduleName\\$entityName\\Infrastructure\\Mapper");
-            $entityFactory = $serviceManager->get("$moduleName\\$entityName\\EntityFactory");
+            $config = $container->get("$moduleName\\$entityName\\Infrastructure\\Config");
+            $repository = $container->get("$moduleName\\$entityName\\Infrastructure\\Repository");
+            $mapper = $container->get("$moduleName\\$entityName\\Infrastructure\\Mapper");
+            $entityFactory = $container->get("$moduleName\\$entityName\\EntityFactory");
         } else {
             $entityName = $namespaceParts[0];
             /** @var Config $config */
-            $config = $serviceManager->get("$entityName\\Infrastructure\\Config");
-            $repository = $serviceManager->get("$entityName\\Infrastructure\\Repository");
-            $mapper = $serviceManager->get("$entityName\\Infrastructure\\Mapper");
-            $entityFactory = $serviceManager->get("$entityName\\EntityFactory");
+            $config = $container->get("$entityName\\Infrastructure\\Config");
+            $repository = $container->get("$entityName\\Infrastructure\\Repository");
+            $mapper = $container->get("$entityName\\Infrastructure\\Mapper");
+            $entityFactory = $container->get("$entityName\\EntityFactory");
         }
 
-        $appConfig = $serviceManager->get('Config');
+        $appConfig = $container->get('Config');
 
         if (!isset($appConfig['entity_map'])) {
             throw new ServiceNotCreatedException("You must define
@@ -57,7 +57,7 @@ class FinderAggregateRepositoryFactory implements AbstractFactoryInterface
         $relatedRepository = [];
         foreach ($relationsConfig as $relatedEntity => $joinRule) {
             $repositoryClass = $relatedEntity . '\Infrastructure\Repository';
-            $relatedRepository[$relatedEntity] = $serviceManager->get($repositoryClass);
+            $relatedRepository[$relatedEntity] = $container->get($repositoryClass);
         }
 
         $features = [];
@@ -67,7 +67,7 @@ class FinderAggregateRepositoryFactory implements AbstractFactoryInterface
             $features[] = new SequenceFeature($tablePrimaryKey, $tableSequence);
         }
 
-        $dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
+        $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
 
         $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter, $features);
 
