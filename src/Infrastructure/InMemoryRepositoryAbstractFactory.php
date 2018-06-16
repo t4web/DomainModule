@@ -41,7 +41,7 @@ class InMemoryRepositoryAbstractFactory implements AbstractFactoryInterface
         }
 
         $eventManager = $container->get('EventManager');
-        $eventManager->addIdentifiers("$entityName\\Infrastructure\\Repository");
+        $eventManager->addIdentifiers(["$entityName\\Infrastructure\\Repository"]);
         $collectionClass = $config->getCollectionClass($entityName);
 
         return new InMemoryRepository(
