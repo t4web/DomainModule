@@ -55,7 +55,7 @@ class RepositoryAbstractFactory implements AbstractFactoryInterface
         $tableGateway = new TableGateway($config->getTable($entityName), $dbAdapter, $features);
 
         $eventManager = $container->get('EventManager');
-        $eventManager->addIdentifiers($requestedName);
+        $eventManager->addIdentifiers([$requestedName]);
 
         return new Repository(
             $entityName,
