@@ -20,7 +20,7 @@ class EntityEventManagerAbstractFactory implements AbstractFactoryInterface
 
         $entityParams = explode('\\', $requestedName);
         if (isset($entityParams[0])) {
-            $eventManager->setIdentifiers($entityParams[0]);
+            $eventManager->setIdentifiers([$entityParams[0]]);
         }
 
         return $entityEventManager;
