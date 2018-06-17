@@ -28,7 +28,7 @@ class EntityEventManager implements EventManagerInterface
      */
     public function trigger(EventInterface $event)
     {
-        $this->eventManager->trigger($event);
+        $this->eventManager->triggerEvent($event);
     }
 
     /**
