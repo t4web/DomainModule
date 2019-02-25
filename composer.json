@@ -13,7 +13,7 @@
     "zendframework/zend-servicemanager": "<2.6 >=2.4",
 
     "t4web/domain": "~1.1.0",
-    "t4web/infrastructure": "~1.3.1"
+    "t4web/infrastructure": "~1.3.8"
   },
   "require-dev" : {
     "phpunit/phpunit": "~4.5",
