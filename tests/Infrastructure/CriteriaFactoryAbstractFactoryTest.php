@@ -31,9 +31,8 @@ class CriteriaFactoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\CriteriaFactory";
 
-        $service = $this->abstractFactory->createServiceWithName(
+        $service = $this->abstractFactory->__invoke(
             $this->serviceLocatorMock->reveal(),
-            $name = 'foo',
             $requestedName
         );
 
@@ -46,16 +45,14 @@ class CriteriaFactoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $this->assertTrue(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock->reveal(),
-                'foo',
                 "$moduleName\\$entityName\\Infrastructure\\CriteriaFactory"
             )
         );
         $this->assertFalse(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock->reveal(),
-                'foo',
                 "$moduleName\\$entityName\\EntityFactory\\Foo"
             )
         );

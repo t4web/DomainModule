@@ -1,6 +1,6 @@
 <?php
 
-namespace T4web\DomainModuleTest;
+namespace T4web\DomainModuleTest\Service;
 
 use T4web\DomainModule\Service\DeleterAbstractFactory;
 
@@ -30,9 +30,8 @@ class DeleterAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $requestedName = "$moduleName\\$entityName\\Service\\Deleter";
 
-        $service = $this->abstractFactory->createServiceWithName(
+        $service = $this->abstractFactory->__invoke(
             $this->serviceLocatorMock,
-            $name = 'foo',
             $requestedName
         );
 
@@ -46,16 +45,14 @@ class DeleterAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $this->assertTrue(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Service\\Deleter"
             )
         );
         $this->assertFalse(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Service\\Deleter\\Foo"
             )
         );

@@ -23,9 +23,8 @@ class EntityFactoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $requestedName = "$moduleName\\$entityName\\EntityFactory";
 
-        $service = $this->abstractFactory->createServiceWithName(
+        $service = $this->abstractFactory->__invoke(
             $this->serviceLocatorMock,
-            $name = 'foo',
             $requestedName
         );
 
@@ -40,16 +39,14 @@ class EntityFactoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $this->assertTrue(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\EntityFactory"
             )
         );
         $this->assertFalse(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\EntityFactory\\Foo"
             )
         );

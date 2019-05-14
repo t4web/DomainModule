@@ -42,9 +42,8 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $requestedName = "$moduleName\\$entityName\\Infrastructure\\Mapper";
 
-        $service = $this->abstractFactory->createServiceWithName(
+        $service = $this->abstractFactory->__invoke(
             $this->serviceLocatorMock,
-            $name = 'foo',
             $requestedName
         );
 
@@ -58,16 +57,14 @@ class MapperAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $this->assertTrue(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Infrastructure\\Mapper"
             )
         );
         $this->assertFalse(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Infrastructure\\Mapper\\Foo"
             )
         );

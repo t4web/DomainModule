@@ -1,6 +1,6 @@
 <?php
 
-namespace T4web\DomainModuleTest;
+namespace T4web\DomainModuleTest\Service;
 
 use T4web\DomainModule\Service\CreatorAbstractFactory;
 
@@ -43,9 +43,8 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $requestedName = "$moduleName\\$entityName\\Service\\Creator";
 
-        $service = $this->abstractFactory->createServiceWithName(
+        $service = $this->abstractFactory->__invoke(
             $this->serviceLocatorMock,
-            $name = 'foo',
             $requestedName
         );
 
@@ -60,16 +59,14 @@ class CreatorAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $this->assertTrue(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Service\\Creator"
             )
         );
         $this->assertFalse(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Service\\Creator\\Foo"
             )
         );

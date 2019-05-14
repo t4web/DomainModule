@@ -28,11 +28,11 @@ class UpdaterAbstractFactory implements AbstractFactoryInterface
         if (count($namespaceParts) > 1) {
             list($moduleName, $entityName) = $namespaceParts;
             $repository = $container->get("$moduleName\\$entityName\\Infrastructure\\Repository");
-            $entityEventManager = $serviceManager->get("$moduleName\\$entityName\\EntityEventManager");
+            $entityEventManager = $container->get("$moduleName\\$entityName\\EntityEventManager");
         } else {
             $entityName = $namespaceParts[0];
             $repository = $container->get("$entityName\\Infrastructure\\Repository");
-            $entityEventManager = $serviceManager->get("$entityName\\EntityEventManager");
+            $entityEventManager = $container->get("$entityName\\EntityEventManager");
         }
 
         return new Updater($repository, $entityEventManager);

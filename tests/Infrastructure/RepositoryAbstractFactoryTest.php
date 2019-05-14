@@ -21,8 +21,6 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $moduleName = 'Tasks';
         $entityName = 'Task';
 
-
-
         $configMock = $this->getMockBuilder("T4webInfrastructure\\Config")
             ->disableOriginalConstructor()
             ->getMock();
@@ -84,11 +82,10 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
         $emMock->expects($this->once())
             ->method('addIdentifiers')
-            ->with($requestedName);
+            ->with([$requestedName]);
 
-        $service = $this->abstractFactory->createServiceWithName(
+        $service = $this->abstractFactory->__invoke(
             $this->serviceLocatorMock,
-            $name = 'foo',
             $requestedName
         );
 
@@ -105,16 +102,14 @@ class RepositoryAbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $entityName = 'Task';
 
         $this->assertTrue(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Infrastructure\\Repository"
             )
         );
         $this->assertFalse(
-            $this->abstractFactory->canCreateServiceWithName(
+            $this->abstractFactory->canCreate(
                 $this->serviceLocatorMock,
-                'foo',
                 "$moduleName\\$entityName\\Infrastructure\\Repository\\Foo"
             )
         );
